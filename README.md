@@ -1,4 +1,4 @@
-# AudioFileDownloader
+# Audio-File-Downloader
 
 Requirements
 ------------
@@ -22,7 +22,9 @@ Reporting
 
 TODO List
 ------------
-[x] Finish readme
+[] Finish readme
+[] Add screenshots of execution
+[] Report successfull download with file size = 0
 
 Change log
 ------------
