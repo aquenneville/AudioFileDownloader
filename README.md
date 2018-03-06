@@ -20,7 +20,7 @@ Reporting
 
 Screenshots
 ------------
-[!Report](adf-report-example.png)
+![Report example](adf-report-example.png)
 
 TODO List
 ------------
