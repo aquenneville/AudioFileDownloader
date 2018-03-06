@@ -22,11 +22,11 @@ Reporting
 
 TODO List
 ------------
-[] Finish readme
+- [ ] Finish readme
 
-[] Add screenshots of execution
+- [ ] Add screenshots of execution
 
-[] Report successfull download with file size = 0
+- [ ] Report successfull download with file size = 0
 
 
 Change log
