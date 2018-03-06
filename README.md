@@ -17,6 +17,8 @@ AFD is compatible with:
 - normal Apache html index 
 
 Reporting 
+
+Screenshots
 ------------
 
 
