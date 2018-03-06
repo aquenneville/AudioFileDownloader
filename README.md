@@ -17,7 +17,12 @@ AFD is compatible with:
 - normal Apache html index 
 
 Reporting 
+------------
 
 
-TODO
-[] Finish readme
+TODO List
+------------
+[x] Finish readme
+
+Change log
+------------
