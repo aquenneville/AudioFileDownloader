@@ -20,7 +20,7 @@ Reporting
 
 Screenshots
 ------------
-
+[!Report](adf-report-example.png)
 
 TODO List
 ------------
@@ -29,6 +29,8 @@ TODO List
 - [ ] Add screenshots of execution
 
 - [ ] Report successfull download with file size = 0
+
+- [ ] Decode url  
 
 
 Change log
