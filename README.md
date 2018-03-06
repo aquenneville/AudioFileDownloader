@@ -1,4 +1,4 @@
-# AudioFileDownloader
+# Audio-File-Downloader
 
 Requirements
 ------------
@@ -18,6 +18,20 @@ AFD is compatible with:
 
 Reporting 
 
+Screenshots
+------------
+[!Report](adf-report-example.png)
 
-TODO
-[] Finish readme
+TODO List
+------------
+- [ ] Finish readme
+
+- [ ] Add screenshots of execution
+
+- [ ] Report successfull download with file size = 0
+
+- [ ] Decode url  
+
+
+Change log
+------------
