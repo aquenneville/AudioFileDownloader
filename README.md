@@ -23,8 +23,11 @@ Reporting
 TODO List
 ------------
 [] Finish readme
+
 [] Add screenshots of execution
+
 [] Report successfull download with file size = 0
+
 
 Change log
 ------------
