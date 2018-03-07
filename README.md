@@ -3,7 +3,7 @@
 Requirements
 ------------
 - Java v7 or higher
-- Shell skills to start the app
+- Shell/git skills to run this app
 
 Usage 
 ------------
