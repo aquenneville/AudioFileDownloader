@@ -49,7 +49,7 @@ public class AudioFileDownloaderApp {
 		} catch (ParseException e) {
 			HelpFormatter formatter = new HelpFormatter();
 			formatter.setOptionComparator(null); // Keep insertion order of options
-			formatter.printHelp(AudioFileDownloaderApp.class.getName(), "download urls", options, null);
+			formatter.printHelp(AudioFileDownloaderApp.class.getName(), "download audio files from url.", options, null);
 			System.exit(1);
 			return;
 		}

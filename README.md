@@ -3,6 +3,15 @@
 Requirements
 ------------
 - Java v7 or higher
+- Shell/git skills to run this app
+
+Usage 
+------------
+java -jar audio-file-downloader.jar -url http://www.gutenberg.org/files/9147/mp3/ -time_wait 3
+
+ -url <url>               the url to get the files
+ 
+ -time_wait <time_wait>   the time to wait between requests in seconds
 
 Features
 ------------
@@ -20,7 +29,7 @@ Reporting
 
 Screenshots
 ------------
-[!Report](adf-report-example.png)
+![Report example](adf-report-example.png)
 
 TODO List
 ------------
