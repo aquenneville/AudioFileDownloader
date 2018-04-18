@@ -17,13 +17,14 @@ public class FileDownloader {
 	
 	public static int REQ_TIME_WAIT = 2; 
 	private static Path downloadPath;
-	private static int total_downloads = 0;
-	private static int total_failed_downloads = 0;
+	private static int totalDownloads = 0;
+	private static int totalFailedDownloads = 0;
+	private static int totalDownloadsWithZeroContentSize = 0;
 	
 	public static boolean downloadFile(String fileURL, String savePath) {
 		try {
 			
-            total_downloads ++;
+            totalDownloads ++;
 			//LocalDate now = LocalDate.now();
 			Path localDownloadPath = null;			
 			if ("".equals(savePath)) {
@@ -39,6 +40,7 @@ public class FileDownloader {
 			String fileName = "";
 			// extracts file name from URL
             fileName = Paths.get(new URL(fileURL).getFile()).getFileName().toString();
+			fileName = java.net.URLDecoder.decode(fileName, "UTF-8");
             if (fileURL.endsWith("/")) {
             	fileName = "index.html";
             }
@@ -83,6 +85,10 @@ public class FileDownloader {
 		            " Content-Length = " + contentLength + 
 		            " Download path = " + saveFilePath);
 		            
+					if (contentLength == 0) {
+						totalDownloadsWithZeroContentSize ++;
+					}
+					
 		            try {
 						Thread.sleep(REQ_TIME_WAIT * 1000);
 					} catch (InterruptedException e) {
@@ -91,7 +97,7 @@ public class FileDownloader {
 					}
 		        } else {
 		            System.out.println("Failure - No file to download for " + fileURL + ". Server replied HTTP code: " + responseCode);
-		            total_failed_downloads ++;
+		            totalFailedDownloads ++;
 		            return false;
 		        }
 		        httpConn.disconnect();
@@ -108,12 +114,15 @@ public class FileDownloader {
 		return downloadPath;
 	}
 
-	public static int getTotal_downloads() {
-		return total_downloads;
+	public static int getTotalDownloads() {
+		return totalDownloads;
 	}
 
-	public static int getTotal_failed_downloads() {
-		return total_failed_downloads;
+	public static int getTotalFailedDownloads() {
+		return totalFailedDownloads;
 	}
 	
+	public static int getTotalFailedDownloads() {
+		return totalDownloadsWithZeroContentSize;
+	}
 }
