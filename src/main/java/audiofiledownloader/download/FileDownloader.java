@@ -25,7 +25,7 @@ public class FileDownloader {
 		try {
 			
             totalDownloads ++;
-			//LocalDate now = LocalDate.now();
+            //LocalDate now = LocalDate.now();
 			Path localDownloadPath = null;			
 			if ("".equals(savePath)) {
 				localDownloadPath = Paths.get(new URL(fileURL).getHost());
