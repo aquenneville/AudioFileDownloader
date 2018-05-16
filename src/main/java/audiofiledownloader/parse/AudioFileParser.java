@@ -14,14 +14,11 @@ import org.jsoup.select.Elements;
 public class AudioFileParser {
 
 	public static List<String> parse(Path pagePath) {
-		List<String> resourceList = new ArrayList<>();
-		//String[] resourceList = null;
+	    List<String> resourceList = new ArrayList<>();
 		byte[] byteContent;
 		try {
 			byteContent = Files.readAllBytes(pagePath);
 			String stringContent = new String(byteContent);
-			// <a([^>]+)>
-			//resourceList = stringContent.split("<a[^>]*>");
 			Document doc = Jsoup.parse(stringContent);
 			Elements elmts = doc.select("a");
 			for (Element elmt: elmts) {	
