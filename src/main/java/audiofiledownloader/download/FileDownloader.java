@@ -121,8 +121,9 @@ public class FileDownloader {
 	public static int getTotalFailedDownloads() {
 		return totalFailedDownloads;
 	}
-	
-	public static int getTotalFailedDownloads() {
+
+	public static int getTotalDownloadsWithZeroContentSize() {
 		return totalDownloadsWithZeroContentSize;
 	}
+	
 }

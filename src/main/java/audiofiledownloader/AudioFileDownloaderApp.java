@@ -44,7 +44,7 @@ public class AudioFileDownloaderApp {
 			}
 				
 			processDownload(url, "");
-			System.out.println("Downloads number: " + FileDownloader.getTotal_downloads() + " - failed: " + FileDownloader.getTotal_failed_downloads());
+			System.out.println("Downloads number: " + FileDownloader.getTotalDownloads() + " - failed: " + FileDownloader.getTotalFailedDownloads());
 			
 		} catch (ParseException e) {
 			HelpFormatter formatter = new HelpFormatter();
