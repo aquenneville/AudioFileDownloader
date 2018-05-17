@@ -37,14 +37,14 @@ public class AudioFileDownloaderApp {
 
             try {				
                 if (timeWait != null) {
-                    FileDownloader.REQ_TIME_WAIT = Integer.parseInt(timeWait);
+                    FileDownloader.requestTimeWait = Integer.parseInt(timeWait);
                 } 
             } catch (NumberFormatException exc) {
                 exc.printStackTrace();
             }
 
             processDownload(url, "");
-            System.out.println("Downloads number: " + FileDownloader.getTotalDownloads() + " - failed: " + FileDownloader.getTotalFailedDownloads());
+            System.out.println(FileDownloader.DownloadReport.downloadReport());
 
         } catch (ParseException e) {
             HelpFormatter formatter = new HelpFormatter();
@@ -57,11 +57,11 @@ public class AudioFileDownloaderApp {
 
     public static void processDownload(String url, String parentPath) {
         if (FileDownloader.downloadFile(url, parentPath)) {
-            if (!FileDownloader.getDownloadPath().toString().matches(".*mp3|.*mp4")) {
-                List<String> listResources = AudioFileParser.parse(FileDownloader.getDownloadPath());
+            if (!FileDownloader.getDownloadPath().toString().matches(AudioFileParser.ALLOWED_EXTENSIONS)) {
+                List<String> listResources = AudioFileParser.parseLinks(FileDownloader.getDownloadPath());
                 if (listResources.size() > 0) {
                     for(String resource: listResources) {
-                        if (resource.matches(".*mp3|.*mp4")) {
+                        if (resource.matches(AudioFileParser.ALLOWED_EXTENSIONS)) {
                             if (FileDownloader.downloadFile(url + resource, FileDownloader.getDownloadPath().toString())) {
                                 continue;
                             } else {
