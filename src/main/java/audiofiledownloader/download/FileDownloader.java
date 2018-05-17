@@ -25,14 +25,25 @@ public class FileDownloader {
     /**
      * Simple class for collecting the failures
      */
-    public static class DownloadReport {
+    public static class DownloadSummary {
             
         public static int totalDownloads = 0;
         public static int totalFailedDownloads = 0;
         public static int totalDownloadsWithZeroContentSize = 0;
 
-        public static String downloadReport() {
+        public static String report() {
             return "Downloads number: " + totalDownloads + ", downloads with empty content: "+ totalDownloadsWithZeroContentSize + ", downloads failed: " + totalFailedDownloads;
+        }
+    }
+    
+    public static class Download {
+        public static String currentFilename = "";
+        public static int contentLength = 0;
+        public static int responseCode = 0;
+        public static String contentType; 
+        
+        public static String report() {
+            return "Current filename: " + currentFilename + ", response code: " + responseCode + ", contentLength: " + contentLength + ", contentType: " + contentType;
         }
     }
     
@@ -80,26 +91,25 @@ public class FileDownloader {
     }
     
     /**
-     * download the file to disk in 
+     * download the file to disk in target save file path
      * @param fileURL   the url 
-     * @param targetSaveFilePath 
-     * @return true if file was downloaded
+     * @param targetSaveFilePath the location to download the file
+     * @return true if file was downloaded with content length > 0
      */
     public static boolean downloadFile(String fileURL, String targetSaveFilePath) {
-        int contentLength = 0;
         
         try {
             Path localDownloadPath = null;  
-            DownloadReport.totalDownloads ++;
+            DownloadSummary.totalDownloads ++;
+            
+            // Parse the filename of the URL
+            String fileName = parseURLFilename(fileURL);
             
             // Was the target save file path provided ?
             localDownloadPath = getTargetSaveFilePath(fileURL, targetSaveFilePath);
 
             // Does the download path exist on the disk ?
             createDirectoryIfNotExists(localDownloadPath);
-
-            // Parse the filename of the URL
-            String fileName = parseURLFilename(fileURL);
         
             fileDownloadPath = Paths.get(getAbsoluteFileDownloadPath(localDownloadPath, fileName));
             
@@ -111,16 +121,17 @@ public class FileDownloader {
                 HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
                 httpConn.setRequestMethod("GET"); 
                 httpConn.setRequestProperty("User-Agent", USER_AGENT);
-                int responseCode = httpConn.getResponseCode();
-
+                Download.responseCode = httpConn.getResponseCode();
+                Download.currentFilename = getAbsoluteFileDownloadPath(localDownloadPath, fileName);
+                
                 // always check HTTP response code first
-                if (responseCode == HttpURLConnection.HTTP_OK) {
-
-                    String contentType = httpConn.getContentType();
-                    contentLength = httpConn.getContentLength();
+                if (Download.responseCode == HttpURLConnection.HTTP_OK) {
+                    
+                    Download.contentType = httpConn.getContentType();
+                    Download.contentLength = httpConn.getContentLength();
 
                     // is file URL a folder ?
-                    if (fileURL.endsWith(File.separator) && contentType.contains("text/html;")) {
+                    if (fileURL.endsWith(File.separator) && Download.contentType.contains("text/html;")) {
                         fileName = HTML_INDEX;
                     }
 
@@ -139,10 +150,10 @@ public class FileDownloader {
                     outputStream.close();
                     inputStream.close();
 
-                    System.out.println("Download: {content-type = " + contentType + ", content-Length = " + contentLength + ", download path = " + getAbsoluteFileDownloadPath(localDownloadPath, fileName) + "}");
+                    System.out.println(Download.report());
 
-                    if (contentLength == 0) {
-                        DownloadReport.totalDownloadsWithZeroContentSize ++;
+                    if (Download.contentLength == 0) {
+                        DownloadSummary.totalDownloadsWithZeroContentSize ++;
                     }
 
                     try {
@@ -152,8 +163,8 @@ public class FileDownloader {
                     }
                     
                 } else {
-                    System.out.println("Failure - No file to download for " + fileURL + ". Server replied HTTP code: " + responseCode);
-                    DownloadReport.totalFailedDownloads ++;
+                    System.out.println("Failure - " + Download.report());
+                    DownloadSummary.totalFailedDownloads ++;
                     return false;
                 }
                 httpConn.disconnect();
@@ -166,7 +177,7 @@ public class FileDownloader {
             exc.printStackTrace();
         }
      
-        return contentLength > 0;
+        return Download.contentLength > 0;
     }
 
     public static Path getDownloadPath() {

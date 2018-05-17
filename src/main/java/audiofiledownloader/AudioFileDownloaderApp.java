@@ -44,7 +44,7 @@ public class AudioFileDownloaderApp {
             }
 
             processDownload(url, "");
-            System.out.println(FileDownloader.DownloadReport.downloadReport());
+            System.out.println(FileDownloader.DownloadSummary.report());
 
         } catch (ParseException e) {
             HelpFormatter formatter = new HelpFormatter();
