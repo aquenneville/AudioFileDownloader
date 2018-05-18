@@ -37,9 +37,9 @@ TODO List
 
 - [ ] Add screenshots of execution
 
-- [ ] Report successfull download with file size = 0
+- [x] Report successfull download with file size = 0
 
-- [ ] Decode url  
+- [x] Decode url  
 
 
 Change log
