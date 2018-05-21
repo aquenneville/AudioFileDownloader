@@ -60,6 +60,7 @@ public class AudioFileDownloaderApp {
             if (!FileDownloader.getDownloadPath().toString().matches(AudioFileParser.ALLOWED_EXTENSIONS)) {
                 List<String> listResources = AudioFileParser.parseLinks(FileDownloader.getDownloadPath());
                 if (listResources.size() > 0) {
+                    System.out.println("Download 1 of " + listResources.size());
                     for(String resource: listResources) {
                         if (resource.matches(AudioFileParser.ALLOWED_EXTENSIONS)) {
                             if (FileDownloader.downloadFile(url + resource, FileDownloader.getDownloadPath().toString())) {
