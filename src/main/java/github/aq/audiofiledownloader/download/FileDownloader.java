@@ -74,7 +74,7 @@ public class FileDownloader {
     public static String parseURLFilename(String fileURL) throws MalformedURLException, UnsupportedEncodingException {
         String fileName = Paths.get(new URL(fileURL).getFile()).getFileName().toString();
         fileName = java.net.URLDecoder.decode(fileName, StandardCharsets.UTF_8.displayName());
-        if (fileURL.endsWith(File.separator)) {
+        if (fileURL.endsWith("/")) {
             fileName = HTML_INDEX;
         }
         return fileName;
@@ -97,7 +97,7 @@ public class FileDownloader {
      * @return true if file was downloaded with content length > 0
      */
     public static boolean downloadFile(String fileURL, String targetSaveFilePath) {
-        
+        boolean isFileExist = false; 
         try {
             Path localDownloadPath = null;  
             DownloadSummary.totalDownloads ++;
@@ -123,7 +123,6 @@ public class FileDownloader {
                 httpConn.setRequestProperty("User-Agent", USER_AGENT);
                 Download.responseCode = httpConn.getResponseCode();
                 Download.currentFilename = getAbsoluteFileDownloadPath(localDownloadPath, fileName);
-                
                 // always check HTTP response code first
                 if (Download.responseCode == HttpURLConnection.HTTP_OK) {
                     
@@ -131,7 +130,7 @@ public class FileDownloader {
                     Download.contentLength = httpConn.getContentLength();
 
                     // is file URL a folder ?
-                    if (fileURL.endsWith(File.separator) && Download.contentType.contains("text/html;")) {
+                    if (fileURL.endsWith("/") && Download.contentType.contains("text/html;")) {
                         fileName = HTML_INDEX;
                     }
 
@@ -171,13 +170,14 @@ public class FileDownloader {
                 
             } else {
                 System.out.println("File found on disk - " + getAbsoluteFileDownloadPath(localDownloadPath, fileName));
+                isFileExist = true;
             }
             
         } catch (IOException exc) {
             exc.printStackTrace();
         }
-     
-        return Download.contentLength > 0;
+        
+        return Download.contentLength > 0 || isFileExist;
     }
 
     public static Path getDownloadPath() {
