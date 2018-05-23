@@ -3,6 +3,8 @@ package github.aq.audiofiledownloader;
 import github.aq.audiofiledownloader.download.FileDownloader;
 import github.aq.audiofiledownloader.parse.AudioFileParser;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 import org.apache.commons.cli.CommandLine;
@@ -44,7 +46,7 @@ public class AudioFileDownloaderApp {
             }
 
             processDownload(url, "");
-            System.out.println(FileDownloader.DownloadSummary.report());
+            System.out.println(FileDownloader.DownloadExecutionSummary.report());
 
         } catch (ParseException e) {
             HelpFormatter formatter = new HelpFormatter();
@@ -63,10 +65,16 @@ public class AudioFileDownloaderApp {
                     System.out.println("Download 1 of " + listResources.size());
                     for(String resource: listResources) {
                         if (resource.matches(AudioFileParser.ALLOWED_EXTENSIONS)) {
-                            if (FileDownloader.downloadFile(url + resource, FileDownloader.getDownloadPath().toString())) {
-                                continue;
-                            } else {
-                                processDownload(resource, FileDownloader.getDownloadPath().toString());
+                            try {
+                                URL URLObject = new URL(url);
+                                String baseUrl = URLObject.getProtocol()+"://"+URLObject.getHost();
+                                if (FileDownloader.downloadFile(baseUrl + resource, FileDownloader.getDownloadPath().toString())) {
+                                    continue;
+                                } else {
+                                    processDownload(resource, FileDownloader.getDownloadPath().toString());
+                                }
+                            } catch (MalformedURLException e) {
+                                e.printStackTrace();
                             }
                         }
                     }

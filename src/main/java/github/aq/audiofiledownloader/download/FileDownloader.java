@@ -25,7 +25,7 @@ public class FileDownloader {
     /**
      * Simple class for collecting the failures
      */
-    public static class DownloadSummary {
+    public static class DownloadExecutionSummary {
             
         public static int totalDownloads = 0;
         public static int totalFailedDownloads = 0;
@@ -71,7 +71,7 @@ public class FileDownloader {
     /**
      * Parse the filename of the URL
      */
-    public static String parseURLFilename(String fileURL) throws MalformedURLException, UnsupportedEncodingException {
+    public static String parseFilename(String fileURL) throws MalformedURLException, UnsupportedEncodingException {
         String fileName = Paths.get(new URL(fileURL).getFile()).getFileName().toString();
         fileName = java.net.URLDecoder.decode(fileName, StandardCharsets.UTF_8.displayName());
         if (fileURL.endsWith("/")) {
@@ -100,10 +100,10 @@ public class FileDownloader {
         boolean isFileExist = false; 
         try {
             Path localDownloadPath = null;  
-            DownloadSummary.totalDownloads ++;
+            DownloadExecutionSummary.totalDownloads ++;
             
             // Parse the filename of the URL
-            String fileName = parseURLFilename(fileURL);
+            String fileName = parseFilename(fileURL);
             
             // Was the target save file path provided ?
             localDownloadPath = getTargetSaveFilePath(fileURL, targetSaveFilePath);
@@ -152,7 +152,7 @@ public class FileDownloader {
                     System.out.println(Download.report());
 
                     if (Download.contentLength == 0) {
-                        DownloadSummary.totalDownloadsWithZeroContentSize ++;
+                        DownloadExecutionSummary.totalDownloadsWithZeroContentSize ++;
                     }
 
                     try {
@@ -163,7 +163,7 @@ public class FileDownloader {
                     
                 } else {
                     System.out.println("Failure - " + Download.report());
-                    DownloadSummary.totalFailedDownloads ++;
+                    DownloadExecutionSummary.totalFailedDownloads ++;
                     return false;
                 }
                 httpConn.disconnect();
