@@ -1,3 +1,5 @@
+<img src="https://travis-ci.org/aquenneville/audio-file-downloader.svg?branch=master"/>
+
 # Audio-File-Downloader
 
 Requirements
