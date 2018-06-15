@@ -2,7 +2,7 @@
 
 <img src="https://travis-ci.org/aquenneville/audio-file-downloader.svg?branch=master"/>
 
-Downloader for mp3 hosted on index.html and can be used to download audio files from http://www.gutenberg.org
+Downloader for mp3 hosted on any public index.html and can be used to download audio files from http://www.gutenberg.org
 
 Requirements
 ------------
