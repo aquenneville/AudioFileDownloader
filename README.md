@@ -39,7 +39,7 @@ TODO List
 ------------
 - [ ] Finish readme
 
-- [ ] Add screenshots of execution
+- [x] Add screenshots of execution
 
 - [x] Report successfull download with file size = 0
 
