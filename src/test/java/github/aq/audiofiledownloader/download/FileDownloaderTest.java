@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -45,5 +46,12 @@ public class FileDownloaderTest {
     public void testShouldJoinLocalStorageWithFilename() {
         String pathFilename = FileDownloader.getAbsoluteFileDownloadPath(Paths.get("www.gutenberg.org"), "9147-01.mp3");
         assertEquals(pathFilename, "www.gutenberg.org/9147-01.mp3");
+    }
+    
+    @Test
+    public void testShouldDownloadFile() throws IOException {
+        assertTrue(FileDownloader.downloadFile("http://www.gutenberg.org/files/9147/mp3/", "storage"));
+        assertTrue(new File("storage/www.gutenberg.org/index.html").exists());
+        Files.delete(Paths.get("storage/www.gutenberg.org/index.html"));
     }
 }
