@@ -60,7 +60,7 @@ public class AudioFileDownloaderApp {
     public static void processDownload(String url, String parentPath) {
         if (FileDownloader.downloadFile(url, parentPath)) {
             if (!FileDownloader.getDownloadPath().toString().matches(AudioFileParser.ALLOWED_EXTENSIONS)) {
-                List<String> listResources = AudioFileParser.parseLinks(FileDownloader.getDownloadPath());
+                List<String> listResources = AudioFileParser.parseAudioLinks(FileDownloader.getDownloadPath());
                 if (listResources.size() > 0) {
                     System.out.println("Download 1 of " + listResources.size());
                     for(String resource: listResources) {

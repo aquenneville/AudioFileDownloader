@@ -17,13 +17,17 @@ public class AudioFileParser {
     public static final String HREF_ATTRIBUTE = "href";
     public static final String HTML_ANCHOR = "a";
     
-    public static List<String> parseLinks(Path pagePath) {
+    /**
+     * parse the links in the file
+     * @param filePath  the file path to the file
+     * @return  A list of urls links 
+     */
+    public static List<String> parseAudioLinks(Path filePath) {
         List<String> resourceList = new ArrayList<>();
         byte[] byteContent;
         
-        try {
-            
-            byteContent = Files.readAllBytes(pagePath);
+        try {            
+            byteContent = Files.readAllBytes(filePath);
             String stringContent = new String(byteContent);
             Document doc = Jsoup.parse(stringContent);
             Elements elmts = doc.select(HTML_ANCHOR);
