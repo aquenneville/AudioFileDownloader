@@ -51,11 +51,11 @@ public class FileDownloader {
      *  Was the target save file path provided ?
      *  @return Path target path for the download
      */
-    public static Path getTargetSaveFilePath(String fileURL, String saveFilePathTarget) throws MalformedURLException {
+    public static Path getStoragePath(String fileURL, String saveFilePathTarget) throws MalformedURLException {
         if ("".equals(saveFilePathTarget)) {
             return Paths.get(new URL(fileURL).getHost());
         } else {
-            return Paths.get(saveFilePathTarget).getParent();
+            return Paths.get(saveFilePathTarget, new URL(fileURL).getHost());
         }
     }
     
@@ -64,12 +64,17 @@ public class FileDownloader {
      */
     public static void createDirectoryIfNotExists(Path downloadPath) throws IOException {
         if (Files.notExists(downloadPath)) {
-            Files.createDirectory(downloadPath);
+            Files.createDirectories(downloadPath);
         }
     }
     
+    
     /**
-     * Parse the filename of the URL
+     * parse the name of the file if the url ends with / filename is index.html
+     * @param fileURL
+     * @return  The name of the filename
+     * @throws MalformedURLException    in case of an exception
+     * @throws UnsupportedEncodingException in a case of an exception
      */
     public static String parseFilename(String fileURL) throws MalformedURLException, UnsupportedEncodingException {
         String fileName = Paths.get(new URL(fileURL).getFile()).getFileName().toString();
@@ -106,7 +111,7 @@ public class FileDownloader {
             String fileName = parseFilename(fileURL);
             
             // Was the target save file path provided ?
-            localDownloadPath = getTargetSaveFilePath(fileURL, targetSaveFilePath);
+            localDownloadPath = getStoragePath(fileURL, targetSaveFilePath);
 
             // Does the download path exist on the disk ?
             createDirectoryIfNotExists(localDownloadPath);
