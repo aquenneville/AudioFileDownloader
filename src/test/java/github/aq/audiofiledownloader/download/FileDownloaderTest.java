@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -23,15 +22,17 @@ public class FileDownloaderTest {
     public void testShouldCreateDirectory() throws IOException {
         FileDownloader.createDirectoryIfNotExists(Paths.get("new-dir/new-dir"));
         assertTrue(new File("new-dir/new-dir/").exists());
-        new File("new-dir/new-dir/").delete();
+        deleteDirectory(new File("new-dir/"));
     }
     
     @Test
-    public void testShouldGetTargetFilePath() throws MalformedURLException {
+    public void testShouldGetStoragePath() throws MalformedURLException {
         Path path = FileDownloader.getStoragePath("http://www.gutenberg.org/media/9147", "");
-        assertTrue(path.toString().equals("www.gutenberg.org"));
-        path = FileDownloader.getStoragePath("http://www.gutenberg.org/media/9147", "storage");
-        assertTrue(path.toString().equals("storage/www.gutenberg.org"));
+        assertTrue(path.toString().equals("www.gutenberg.org/media/9147"));
+        path = FileDownloader.getStoragePath("http://www.gutenberg.org/media/9147", "test-storage");
+        assertTrue(path.toString().equals("test-storage/www.gutenberg.org/media/9147"));
+        path = FileDownloader.getStoragePath("http://www.gutenberg.org/media/9147/9147-1.mp3", "test-storage");
+        assertTrue(path.toString().equals("test-storage/www.gutenberg.org/media/9147"));
     }
 
     @Test
@@ -50,8 +51,18 @@ public class FileDownloaderTest {
     
     @Test
     public void testShouldDownloadFile() throws IOException {
-        assertTrue(FileDownloader.downloadFile("http://www.gutenberg.org/files/9147/mp3/", "storage"));
-        assertTrue(new File("storage/www.gutenberg.org/index.html").exists());
-        Files.delete(Paths.get("storage/www.gutenberg.org/index.html"));
+        assertTrue(FileDownloader.downloadFile("http://www.gutenberg.org/files/9147/mp3/", "test-storage"));
+        assertTrue(new File("test-storage/www.gutenberg.org/files/9147/mp3/index.html").exists());
+        deleteDirectory(new File("test-storage/"));
+    }
+    
+    boolean deleteDirectory(File directoryToBeDeleted) {
+        File[] allContents = directoryToBeDeleted.listFiles();
+        if (allContents != null) {
+            for (File file : allContents) {
+                deleteDirectory(file);
+            }
+        }
+        return directoryToBeDeleted.delete();
     }
 }

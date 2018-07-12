@@ -67,8 +67,8 @@ public class AudioFileDownloaderApp {
                         if (resource.matches(AudioFileParser.ALLOWED_EXTENSIONS)) {
                             try {
                                 URL URLObject = new URL(url);
-                                String baseUrl = URLObject.getProtocol()+"://"+URLObject.getHost();
-                                if (FileDownloader.downloadFile(baseUrl + resource, FileDownloader.getDownloadPath().toString())) {
+                                String baseUrl = URLObject.getProtocol()+"://"+URLObject.getHost() + URLObject.getPath();
+                                if (FileDownloader.downloadFile(baseUrl + resource, "")) { //FileDownloader.getDownloadPath().toString())) {
                                     continue;
                                 } else {
                                     processDownload(resource, FileDownloader.getDownloadPath().toString());

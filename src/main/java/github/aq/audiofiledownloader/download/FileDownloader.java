@@ -1,5 +1,7 @@
 package github.aq.audiofiledownloader.download;
 
+import github.aq.audiofiledownloader.model.AudioURL;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -46,21 +48,26 @@ public class FileDownloader {
             return "Current filename: " + currentFilename + ", response code: " + responseCode + ", contentLength: " + contentLength + ", contentType: " + contentType;
         }
     }
-    
+
     /**
-     *  Was the target save file path provided ?
-     *  @return Path target path for the download
+     * Was the target save file path provided ?
+     * @param fileURL       String contains the file url
+     * @param saveFilePathTarget    download location
+     * @return  The relative host path to create locally on disk
+     * @throws MalformedURLException    in case the fileURL is malformed
      */
     public static Path getStoragePath(String fileURL, String saveFilePathTarget) throws MalformedURLException {
         if ("".equals(saveFilePathTarget)) {
-            return Paths.get(new URL(fileURL).getHost());
+            return Paths.get(new URL(fileURL).getHost() + new AudioURL(fileURL).getPath());
         } else {
-            return Paths.get(saveFilePathTarget, new URL(fileURL).getHost());
+            return Paths.get(saveFilePathTarget, new URL(fileURL).getHost() + new AudioURL(fileURL).getPath());
         }
     }
     
     /**
      * Does the download path exist on the disk ?
+     * @param downloadPath  The download location 
+     * @throws IOException  in case of an directory creation issue 
      */
     public static void createDirectoryIfNotExists(Path downloadPath) throws IOException {
         if (Files.notExists(downloadPath)) {
@@ -68,10 +75,9 @@ public class FileDownloader {
         }
     }
     
-    
     /**
      * parse the name of the file if the url ends with / filename is index.html
-     * @param fileURL
+     * @param fileURL String contains the file url
      * @return  The name of the filename
      * @throws MalformedURLException    in case of an exception
      * @throws UnsupportedEncodingException in a case of an exception
@@ -88,8 +94,8 @@ public class FileDownloader {
     /**
      * construct the absolute file download path
      * @param localDownloadPath   the local download path
-     * @param fileName   the filename
-     * @return  the absolute file download path
+     * @param fileName   String contains the filename 
+     * @return  the absolute file download path and filename
      */
     public static String getAbsoluteFileDownloadPath(Path localDownloadPath, String fileName) {
         return localDownloadPath.toString() + File.separator + fileName;
@@ -97,7 +103,7 @@ public class FileDownloader {
     
     /**
      * download the file to disk in target save file path
-     * @param fileURL   the url 
+     * @param fileURL   String contains the file url
      * @param targetSaveFilePath the location to download the file
      * @return true if file was downloaded with content length > 0
      */
@@ -143,7 +149,7 @@ public class FileDownloader {
                     InputStream inputStream = httpConn.getInputStream();
 
                     // opens an output stream to save into file
-                    FileOutputStream outputStream = new FileOutputStream(getAbsoluteFileDownloadPath(localDownloadPath, fileName));
+                    FileOutputStream outputStream = new FileOutputStream(getAbsoluteFileDownloadPath(localDownloadPath, fileName));//.replaceAll("[\\s]", "")));
 
                     int bytesRead = -1;
                     byte[] buffer = new byte[BUFFER_SIZE];
